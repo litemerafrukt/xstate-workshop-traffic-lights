@@ -1,9 +1,15 @@
+import { startTimeMachine } from "./machines/timeMachine"
 import { setTheScene } from "./scene"
 import "./style.css"
 
-const { scene, timeControl, lightSwitch, leftTrafficLight, rightTrafficLight } =
+const { timeControl, lightSwitch, leftTrafficLight, rightTrafficLight } =
   await setTheScene()
 
+/* Time switch */
+const timeSwitchButton = document.getElementById("timeSwitch")
+startTimeMachine(timeControl, timeSwitchButton)
+
+/* Signal error by blinking traffic lights */
 let blinkOn = true
 
 setInterval(() => {

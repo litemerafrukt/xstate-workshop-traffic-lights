@@ -7,3 +7,7 @@ Get the traffic lights working! As a warm up you could fix the night lights that
 ## Example
 
 There is a night machine that controls time to take inspiration from when embarking on the night lights problem.
+
+## Extras
+
+Make a night - day cycle?

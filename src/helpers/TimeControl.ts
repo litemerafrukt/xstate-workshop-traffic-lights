@@ -7,9 +7,11 @@ export class TimeControl {
 
   night() {
     this.bg.style.visibility = "visible"
+    this.bg.style.opacity = "1"
   }
 
   day() {
     this.bg.style.visibility = "hidden"
+    this.bg.style.opacity = "0"
   }
 }

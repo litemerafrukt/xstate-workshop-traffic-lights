@@ -13,3 +13,11 @@ body {
   align-items: center;
   margin: 2rem auto;
 }
+
+.time-button {
+  text-transform: capitalize;
+}
+
+#nightBG {
+  transition:visibility 0.3s linear,opacity 0.3s linear;
+}
