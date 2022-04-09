@@ -38,7 +38,6 @@ export function startTimeMachine(
   timeService.start()
 
   timeButton.addEventListener("click", () => {
-    console.log("time switch")
     timeService.send("SWITCH")
   })
 
