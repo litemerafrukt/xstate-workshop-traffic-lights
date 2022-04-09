@@ -1,0 +1,2 @@
+- [ ] Some way to signal that a car comes from left or right. Preferably a clickable svg-car but at least a button.
+- [ ] Night switch and machine.
