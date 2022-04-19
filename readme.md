@@ -10,7 +10,7 @@ Node and npm installed
 
 ## What todo?
 
-Get the traffic lights working! As a warm up you could fix the night lights that also broken.
+Get the traffic lights working! As a warm up you could fix the night lights thats also broken.
 
 ## Example
 

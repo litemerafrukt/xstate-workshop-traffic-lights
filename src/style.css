@@ -8,6 +8,7 @@ body {
 }
 
 .scene-wrapper {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,4 +21,17 @@ body {
 
 #nightBG {
   transition:visibility 0.3s linear,opacity 0.3s linear;
+}
+
+.cars {
+  position: absolute;
+    display: flex;
+    justify-content: space-around;
+    bottom: 77px;
+    width: 100%;
+}
+
+.car-button {
+  width: 140px;
+  height: 90px;
 }
