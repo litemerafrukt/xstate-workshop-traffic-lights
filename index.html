@@ -17,9 +17,13 @@
 
   <main class="scene-wrapper">
     <div id="scene"></div>
+    <div style="display: grid; white-space: nowrap">
+      <span id='leftQueue' class="left-queue">Left Queue: 0</span>
+      <span id='rightQueue' class="right-queue">Right Queue: 0</span>
+    </div>
     <div class="cars">
-      <button id="leftCar" type="button" class="car-button">Left Car</button>
-      <button id="rightCar" type="button" class="car-button">Right Car</button>
+      <button id="leftCar" type="button" class="car-button">Add left Car</button>
+      <button id="rightCar" type="button" class="car-button">Add right Car</button>
     </div>
   </main>
   <script type="module" src="/src/main.ts"></script>

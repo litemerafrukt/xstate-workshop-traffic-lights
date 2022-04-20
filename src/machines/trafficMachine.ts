@@ -1,27 +1,54 @@
-import { createMachine, interpret } from "xstate"
+import { assign, createMachine, interpret, StateValueMap } from "xstate"
 import { TrafficLight } from "../helpers/TrafficLight"
 
 const trafficMachine = createMachine({
   id: "traffic",
   initial: "left",
-  states: {
-    initial: {
 
-    },
+  context: {
+    leftQueue: 0,
+    rightQueue: 0
+  },
+
+  on: {
+    INCREMENT_LEFT_QUEUE: { actions: "incrementLeftQueue" },
+    INCREMENT_RIGHT_QUEUE: { actions: "incrementRightQueue" }
+  },
+  states: {
     left: {
-      after: {
-        5000: { target: "transitionRight" }
+      initial: "waitingToDecrement",
+      states: {
+        waitingToDecrement: {
+          after: {
+            1000: { target: "decrementing" }
+          }
+        },
+        decrementing: {
+          entry: "decrementLeftQueue",
+          always: "waitingToDecrement"
+        }
       },
-      on: {
-        SWITCH: "transitionRight"
+      after: {
+        5000: { cond: "isLeftQueueEmpty", target: "transitionRight" },
+        10000: { target: "transitionRight" }
       }
     },
     right: {
-      after: {
-        5000: { target: "transitionLeft" }
+      initial: "waitingToDecrement",
+      states: {
+        waitingToDecrement: {
+          after: {
+            1000: { target: "decrementing" }
+          }
+        },
+        decrementing: {
+          entry: "decrementRightQueue",
+          always: "waitingToDecrement"
+        }
       },
-      on: {
-        SWITCH: "transitionLeft"
+      after: {
+        5000: { cond: "isRightQueueEmpty", target: "transitionLeft" },
+        10000: { target: "transitionLeft" }
       }
     },
     transitionRight: {
@@ -35,45 +62,74 @@ const trafficMachine = createMachine({
       }
     }
   }
+}, {
+  guards: {
+    isLeftQueueEmpty: (context) => context.leftQueue === 0,
+    isRightQueueEmpty: (context) => context.rightQueue === 0
+  },
+  actions: {
+    // action implementations
+    incrementLeftQueue: assign({
+      leftQueue: (context) => context.leftQueue + 1
+    }),
+    incrementRightQueue: assign({
+      rightQueue: (context) => context.rightQueue + 1
+    }),
+    decrementRightQueue: assign({
+      rightQueue: (context) => context.rightQueue - 1 >= 0 ? context.rightQueue - 1 : 0
+    }),
+    decrementLeftQueue: assign({
+      leftQueue: (context) => context.leftQueue - 1 >= 0 ? context.leftQueue - 1 : 0
+    })
+  }
 })
 
 
 export function startTrafficMachine(
   leftTrafficLight: TrafficLight,
-  rightTrafficLight: TrafficLight
+  rightTrafficLight: TrafficLight,
+  leftQueueElement: HTMLElement,
+  rightQueueElement: HTMLElement
 ) {
   const trafficService = interpret(trafficMachine).onTransition((state) => {
-    const stateValue = state.value as string
+    let stateValue = state.value as string | StateValueMap
+
+
+    if (typeof stateValue === "object") {
+      if ("left" in stateValue) {
+        stateValue = "left"
+      } else {
+        stateValue = "right"
+      }
+    }
+
 
     leftTrafficLight.allOff()
     rightTrafficLight.allOff()
 
-    switch (stateValue) {
-      case "left": {
-        leftTrafficLight.greenOn()
-        rightTrafficLight.redOn()
-        break
-      }
-      case "right": {
-        leftTrafficLight.redOn()
-        rightTrafficLight.greenOn()
-        break
-      }
-      case "transitionRight": {
-        leftTrafficLight.yellowOn()
-        rightTrafficLight.redOn()
-        break
-      }
-      case "transitionLeft": {
-        leftTrafficLight.redOn()
-        rightTrafficLight.yellowOn()
-        break
-      }
-      default: {
-        //statements;
-        break
-      }
+    leftQueueElement.textContent = "Left Queue: " + state.context.leftQueue
+    rightQueueElement.textContent = "Right Queue: " + state.context.rightQueue
+
+    if (stateValue.toString().includes("left")) {
+      leftTrafficLight.greenOn()
+      rightTrafficLight.redOn()
     }
+    if (stateValue.toString().includes("right")) {
+      leftTrafficLight.redOn()
+      rightTrafficLight.greenOn()
+    }
+
+    if (stateValue.toString().includes("transitionRight")) {
+      leftTrafficLight.yellowOn()
+      rightTrafficLight.redOn()
+
+    }
+    if (stateValue.toString().includes("transitionLeft")) {
+      leftTrafficLight.redOn()
+      rightTrafficLight.yellowOn()
+    }
+
+
   })
 
   trafficService.start()

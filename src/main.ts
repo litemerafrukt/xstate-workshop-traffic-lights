@@ -6,19 +6,22 @@ import { startTrafficMachine } from "./machines/trafficMachine"
 const { timeControl, lightSwitch, leftTrafficLight, rightTrafficLight } =
   await setTheScene()
 
-const trafficService = startTrafficMachine(leftTrafficLight,rightTrafficLight)
+const leftQueueElement = document.getElementById("leftQueue")
+const rightQueueElement = document.getElementById("rightQueue")
+
+const trafficService = startTrafficMachine(leftTrafficLight,rightTrafficLight, leftQueueElement, rightQueueElement)
 
 /* Car buttons */
 const leftCarButton = document.getElementById("leftCar")
 const rightCarButton = document.getElementById("rightCar")
 
 leftCarButton.addEventListener("click", () => {
-  trafficService.send("SWITCH")
+  trafficService.send("INCREMENT_LEFT_QUEUE")
   console.log("left car button clicked, Tuuut!")
 })
 
 rightCarButton.addEventListener("click", () => {
-  trafficService.send("SWITCH")
+  trafficService.send("INCREMENT_RIGHT_QUEUE")
   console.log("right car button clicked, Tuuut!")
 })
 
