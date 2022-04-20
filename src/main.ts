@@ -1,28 +1,33 @@
 import { startTimeMachine } from "./machines/timeMachine"
 import { setTheScene } from "./scene"
 import "./style.css"
+import { startTrafficMachine } from "./machines/trafficMachine"
 
 const { timeControl, lightSwitch, leftTrafficLight, rightTrafficLight } =
   await setTheScene()
+
+const trafficService = startTrafficMachine(leftTrafficLight,rightTrafficLight)
 
 /* Car buttons */
 const leftCarButton = document.getElementById("leftCar")
 const rightCarButton = document.getElementById("rightCar")
 
 leftCarButton.addEventListener("click", () => {
+  trafficService.send("SWITCH")
   console.log("left car button clicked, Tuuut!")
 })
 
 rightCarButton.addEventListener("click", () => {
+  trafficService.send("SWITCH")
   console.log("right car button clicked, Tuuut!")
 })
 
 /* Time switch */
 const timeSwitchButton = document.getElementById("timeSwitch")
-startTimeMachine(timeControl, timeSwitchButton)
+startTimeMachine(timeControl, timeSwitchButton, lightSwitch)
 
 /* Signal error by blinking traffic lights */
-let blinkOn = true
+/*let blinkOn = false
 
 setInterval(() => {
   if (blinkOn) {
@@ -43,3 +48,4 @@ setInterval(() => {
     blinkOn = true
   }
 }, 750)
+*/

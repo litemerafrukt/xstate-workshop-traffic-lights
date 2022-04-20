@@ -9,6 +9,12 @@ export class TrafficLight {
     this.green = document.getElementById(greenId)
   }
 
+  allOff() {
+    this.red.style.visibility = "hidden"
+    this.yellow.style.visibility = "hidden"
+    this.green.style.visibility = "hidden"
+  }
+
   redOn() {
     this.red.style.visibility = "visible"
   }

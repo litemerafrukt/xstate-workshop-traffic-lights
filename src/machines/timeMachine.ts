@@ -1,5 +1,6 @@
 import { createMachine, interpret } from "xstate"
 import { TimeControl } from "../helpers/TimeControl"
+import { LightSwitch } from "../helpers/LightSwitch"
 
 const timeMachine = createMachine({
   id: "time",
@@ -7,15 +8,15 @@ const timeMachine = createMachine({
   states: {
     day: {
       on: {
-        SWITCH: "night",
-      },
+        SWITCH: "night"
+      }
     },
     night: {
       on: {
-        SWITCH: "day",
-      },
-    },
-  },
+        SWITCH: "day"
+      }
+    }
+  }
 })
 
 /**
@@ -26,13 +27,18 @@ const timeMachine = createMachine({
  */
 export function startTimeMachine(
   timeControl: TimeControl,
-  timeButton: HTMLElement
+  timeButton: HTMLElement,
+  lightSwitch: LightSwitch
 ) {
   const timeService = interpret(timeMachine).onTransition((state) => {
     const stateValue = state.value as string
 
+    stateValue === "day" ? lightSwitch.off() : lightSwitch.on()
+
     timeControl[stateValue]()
     timeButton.innerText = stateValue
+
+
   })
 
   timeService.start()
