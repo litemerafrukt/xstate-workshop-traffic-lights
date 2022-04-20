@@ -5,12 +5,21 @@ const trafficMachine = createMachine({
   id: "traffic",
   initial: "left",
   states: {
+    initial: {
+
+    },
     left: {
+      after: {
+        5000: { target: "transitionRight" }
+      },
       on: {
         SWITCH: "transitionRight"
       }
     },
     right: {
+      after: {
+        5000: { target: "transitionLeft" }
+      },
       on: {
         SWITCH: "transitionLeft"
       }
