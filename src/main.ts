@@ -5,6 +5,18 @@ import "./style.css"
 const { timeControl, lightSwitch, leftTrafficLight, rightTrafficLight } =
   await setTheScene()
 
+/* Car buttons */
+const leftCarButton = document.getElementById("leftCar")
+const rightCarButton = document.getElementById("rightCar")
+
+leftCarButton.addEventListener("click", () => {
+  console.log("left car button clicked, Tuuut!")
+})
+
+rightCarButton.addEventListener("click", () => {
+  console.log("right car button clicked, Tuuut!")
+})
+
 /* Time switch */
 const timeSwitchButton = document.getElementById("timeSwitch")
 startTimeMachine(timeControl, timeSwitchButton)

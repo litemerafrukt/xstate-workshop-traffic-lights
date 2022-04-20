@@ -13,6 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 2rem auto;
+  max-width: 1024px;
 }
 
 .time-button {
