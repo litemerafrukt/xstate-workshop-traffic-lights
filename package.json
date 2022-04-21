@@ -17,6 +17,7 @@
   "dependencies": {
     "eslint-plugin-html": "^6.2.0",
     "fsevents": "^2.3.2",
+    "lodash": "^4.17.21",
     "xstate": "^4.31.0"
   }
 }
